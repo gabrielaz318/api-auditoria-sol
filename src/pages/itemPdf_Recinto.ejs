@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+
+    <title>Document</title>
+</head>
+<style>
+    * {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;
+    }
+    td, th, .menor {
+        font-size: 14px;
+    }
+    .container-card {
+        break-inside: avoid;
+    }
+</style>
+<body class="d-flex flex-column justify-content-between" style="height: 100vh;">
+    <div>
+        <header class="d-flex pb-4" style="border-bottom: 1px solid rgba(0, 0, 0, 0.1);">
+            <div class="d-flex justify-content-center align-items-center  ">
+                <img src="https://img.elo7.com.br/product/original/3082945/logotipo-personalizado-mesa.jpg" width="150" alt="">
+            </div>
+            <div class="d-flex justify-content-center align-items-center flex-column flex-grow-1">
+                <h3 class="m-0 p-0">SUA EMPRESA</h3>
+                <h5 class="m-0 p-0">Auditoria Recintos Zoológico</h5>
+                <!-- <h6 class="m-0 p-0">Segurança - Organização - Limpeza</h6> -->
+            </div>
+            <div class="d-flex justify-content-center align-items-center flex-column" style="width: 150px;">
+                <p class="m-0 p-0 ">Código</p>
+                <p class="m-0 p-0 "><%= dados.record.id %></p>
+            </div>
+        </header>
+        <section class="mt-3">
+            <h6>Informações</h6>
+            <table class="table table-bordered mb-0 pb-0">
+                <tr>
+                    <td width="140px" class="table-active">Auditado por:</td>
+                    <td><%= dados.record.creator %></td>
+                    <td width="140px" class="table-active">Setor:</td>
+                    <td><%= dados.record.department %></td>
+                </tr>
+                <tr>
+                    <td width="30px" class="table-active">Status:</td>
+                    <td><%= dados.record.status %></td>
+                    <td class="table-active">Criado em:</td>
+                    <td><%= dados.record.created_at %></td>
+                </tr>
+            </table>
+
+            <h6 class="mt-3">Fotos</h6>
+            <div>
+                <% for(const item of dados.items) { %>
+                <div class="d-flex justify-content-evenly container-card flex-wrap mb-4" style="gap: 12px;">
+                    <% for(const item2 of item) { %>
+                        <div class="card" style="border-radius: 10px;width: 240px;">
+                            <img src="<%= item2.picture %>" class="mb-2" width="240" alt="" style="border-radius: 10px;">
+                            <p style="font-size: 15px;word-break: break-all;" class="text-center m-0 p-0 mb-2">
+                                <% if(item2.comment.length == 0) { %>
+                                    <%= 'Nenhum comentário foi adicionado para essa foto' %>
+                                <% } else { %>
+                                    <%= item2.comment %>
+                                <% } %>
+                            </p>
+                        </div>
+                    <% } %>
+                </div>
+                <% } %>
+            </div>
+        </section>
+    </div>
+
+    <div class="d-flex flex-row mt-3" style="break-inside: avoid;">
+        <div class="d-flex justify-content-center flex-column align-items-center mt-4" style="margin: 0 auto;">
+            <p>______________________________</p>
+            <p class="text-center" style="font-size: 15px;">SETOR RESPONSÁVEL</p>
+        </div>
+        <div class="d-flex justify-content-center flex-column align-items-center mt-4" style="margin: 0 auto;">
+            <p>______________________________</p>
+            <p class="text-center" style="font-size: 15px;"><%= dados.record.department %></p>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+</body>
+</html>

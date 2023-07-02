@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checklist</title>
+    <style>
+        * {
+            font-family: Arial, Helvetica, sans-serif;
+        }
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        table {
+            border-collapse: collapse;
+        }
+        table, th, td {
+            border: 1px solid black;
+        }
+        td, tr, div {
+            padding: 0;
+        }
+        .txt-center {
+            text-align: center;
+        }
+        p {
+            font-size: 10px;
+            margin: 0;
+            padding: 4px 0;
+        }
+        .bg-red {
+            font-weight: 600;
+            text-transform: uppercase;
+            background-color: #e82b00;
+        }
+        .bg-yellow {
+            font-weight: 600;
+            text-transform: uppercase;
+            background-color: #fcfb05;
+        }
+        .bg-green {
+            font-weight: 600;
+            text-transform: uppercase;
+            background-color: #38A169;
+        }
+        .bg-black {
+            color: #FFF;
+            font-weight: 600;
+            background-color: #444;
+        }
+        .desc-page {
+            font-size: 10px;
+        }
+        .table-bottom {
+            margin-top: -1px;
+        }
+        .vertical-cell {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 12px 0;
+        }
+        .vertical-cell p {
+            rotate: 180deg;
+            writing-mode: vertical-lr;
+        }
+        .txt-align-right {
+            text-align: right;
+        }
+        .padding-2 {
+            padding: 4px;
+        }
+        .padding-h-2 {
+            padding: 0 2px;
+        }
+        .bold {
+            font-weight: 600;
+        }
+        .txt-department {
+            font-size: 13px;
+        }
+        .container {
+            border: 1px solid #000;
+        }
+        .uppercase {
+            text-transform: uppercase;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <table width="100%">
+            <tr>
+                <td width="80px" rowspan="2">
+                    <img width="80px" src="https://img.elo7.com.br/product/original/3082945/logotipo-personalizado-mesa.jpg" />
+                </td>
+                <td colspan="<%= dados.grades.length + 1 %>">
+                    <p class="txt-center desc-page padding-2">CHECK LIST PROGRAMA SOL - SEGURANÇA / ORGANIZAÇÃO / LIMPEZA</p>
+                </td>
+            </tr>
+            <tr>
+                <td class="bg-black">
+                    <p class="txt-center txt-department">Setor: <span class="uppercase"><%= dados.department %></span></p>
+                </td>
+                <% dados.grades.forEach(item => { %>
+                    <td width="50px" style="background-color: <%= item.color %>; font-weight: 600; text-transform: uppercase;">
+                        <p class="txt-center padding-2"><%= item.desc %><br/><%= item.grade %></p>
+                    </td> 
+                <% }); %>
+                <!-- <td width="50px" class="bg-yellow">
+                    <p class="txt-center padding-2">Atende parcial<br/>5</p>
+                </td>
+                <td width="50px" class="bg-green">
+                    <p class="txt-center padding-2">Atende<br/>10</p>
+                </td> -->
+            </tr>
+        </table>
+    
+        <table width="100%" class="table-bottom">
+            <tr>
+                <td width="80px"></td>
+                <td width="270px">
+                    <p class="padding-2 bold">ID: <%= dados.id %></p>
+                </td>
+                <td width="264px">
+                    <p class="padding-2 bold">Auditor(es): <%= dados.creator %></p>
+                </td>
+                <td>
+                    <p class="padding-2 bold">Data: <%= dados.created_at %></p>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="4">&nbsp;</td>
+            </tr>
+        </table>
+    
+        <table width="100%" class="table-bottom">
+            <tr>
+                <td width="80px"></td>
+                <td width="270px">
+                    <p class="txt-center bold padding-2">ITEM AVALIADO</p>
+                </td>
+                <td>
+                    <p class="txt-center bold padding-2">CRITÉRIOS DE AVALIAÇÃO</p>
+                </td>
+                <td width="50px">
+                    <p class="txt-center bold padding-2">NOTAS</p>
+                </td>
+                <td width="100px">
+                    <p class="txt-center bold padding-2">MÉDIA</p>
+                </td>
+            </tr>
+            <% dados.checklist.forEach((itemCheck, index, array1) => { %>
+                <% itemCheck.filter(item => item.grade != -1).forEach((item, index, array) => { %>
+                    
+                    <% if(index == 0) { %>
+                        <tr>
+                            <td rowspan="<%= itemCheck.filter(item => item.grade != -1).length %>">
+                                <div class="vertical-cell">
+                                    <p class="bold"><span class="uppercase"><%= item.title %></span></p>
+                                </div>
+                            </td>
+                            <td>
+                                <p class="padding-h-2"><%= item.item %></p>
+                            </td>
+                            <td>
+                                <p class="padding-h-2"><%= item.desc %></p>
+                            </td>
+                            <td>
+                                <p class="txt-center"><%= item.grade %></p>
+                            </td>
+                            <td rowspan="<%= itemCheck.filter(item => item.grade != -1).length %>" class="<%= (array.filter(item => item.grade != -1).reduce((acc, item2) => acc + item2.grade, 0) / array.filter(item => item.grade != -1).length).toFixed(1) <= 7.49 ? 'bg-red' : (array.filter(item => item.grade != -1).reduce((acc, item2) => acc + item2.grade, 0) / array.filter(item => item.grade != -1).length).toFixed(1) < 7.59 ? 'bg-yellow' : 'bg-green' %>">
+                                <p class="txt-center"><%= (array.filter(item => item.grade != -1).reduce((acc, item2) => acc + item2.grade, 0) / array.filter(item => item.grade != -1).length).toFixed(1) %></p>
+                            </td>
+                        </tr>
+                    <% } else { %>
+                        <tr>
+                            <td>
+                                <p class="padding-h-2"><%= item.item %></p>
+                            </td>
+                            <td>
+                                <p class="padding-h-2"><%= item.desc %></p>
+                            </td>
+                            <td>
+                                <p class="txt-center"><%= item.grade %></p>
+                            </td>
+                        </tr>
+                    <% } %>
+            <% }); %>
+            <% if(array1.length-1 != index) { %>
+                <tr>
+                    <td colspan="5">&nbsp;</td>
+                </tr>
+            <% } %>
+            <% }); %>
+            <tr>
+                <td colspan="4">
+                    <p class="txt-align-right bold" style="padding: 2px 4px;">MÉDIA FINAL</p>
+                </td>
+                <td class="<%= dados.average <= 7.49 ? 'bg-red' : dados.average < 7.59 ? 'bg-yellow' : 'bg-green' %>">
+                    <p class="txt-center"><%= dados.average %></p>
+                </td>
+            </tr>
+        </table>
+    </div>
+</body>
+</html>
